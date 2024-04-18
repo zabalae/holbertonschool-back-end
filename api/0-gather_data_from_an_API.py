@@ -4,30 +4,36 @@
 import requests
 import sys
 
-def get_employee_tasks(user_id):
-    """Returns information about an employee's tasks"""
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(f"UsageError: python3 {__file__} employee_id(int)")
+        sys.exit(1)
 
-    user_url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/todos"
+    API_URL = "https://jsonplaceholder.typicode.com"
+    EMPLOYEE_ID = sys.argv[1]
 
     try:
-        user_response = requests.get(user_url)
-        user_response.raise_for_status()
-        user_data = user_response.json()
-        employee_name = user_data.get('name')
+        response = requests.get(
+            f"{API_URL}/users/{EMPLOYEE_ID}/todos",
+            params={"_expand": "user"}
+        )
+        response.raise_for_status()
+        data = response.json()
 
-        todos_response = requests.get(todos_url)
-        todos_response.raise_for_status()
-        todos_data = todos_response.json()
+        if not len(data):
+            print("RequestError:", 404)
+            sys.exit(1)
 
-        number_of_done_tasks = sum(1 for task in todos_data if task['completed'])
-        total_number_of_tasks = len(todos_data)
-        task_titles = [task['title'] for task in todos_data if task['completed']]
+        employee_name = data[0]["user"]["name"]
+        total_tasks = len(data)
+        done_tasks = [task for task in data if task["completed"]]
+        total_done_tasks = len(done_tasks)
 
-        print(f'Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_number_of_tasks}):')
-
-        for task_title in task_titles:
-            print(f'\t{task_title}')
+        print(f"Employee {employee_name} is done with tasks"
+              f"({total_done_tasks}/{total_tasks}):")
+        
+        for task in done_tasks:
+            print(f"\t{task['title']}")
 
     except requests.HTTPError as e:
         print(f"Error: {e}")
