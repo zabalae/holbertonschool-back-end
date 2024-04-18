@@ -8,7 +8,7 @@ def get_employee_tasks(user_id):
     """Returns information about an employee's tasks"""
 
     user_url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/users/{user_id}/todos"
+    todos_url = f"https://jsonplaceholder.typicode.com/todos"
 
     try:
         user_response = requests.get(user_url)
