@@ -1,32 +1,34 @@
 #!/usr/bin/python3
-"""RESTFul API for employee"""
+"""RESTful API for employee"""
+
 import requests
 import sys
 
+def get_employee_tasks(user_id):
+    """Returns information about an employee's tasks"""
 
-if __name__ == "__main__":
+    user_url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
+    todos_url = f"https://jsonplaceholder.typicode.com/users/{user_id}/todos"
 
-    """Returns information about employees"""
-    id = int(sys.argv[1])
-    number_of_done_tasks = 0
-    total_number_of_tasks = 0
-    task_title = []
+    try:
+        user_response = requests.get(user_url)
+        user_response.raise_for_status()
+        user_data = user_response.json()
+        employee_name = user_data.get('name')
 
-    user_url = requests.get(
-        'https://jsonplaceholder.typicode.com/users/' + id).json()
-    employee_name = user_url.get('name')
-    todos = requests.get(
-        "https://jsonplaceholder.typicode.com/users/" + id + "/todos").json()
+        todos_response = requests.get(todos_url)
+        todos_response.raise_for_status()
+        todos_data = todos_response.json()
 
-    for task in todos:
-        if task.get('userId') == id:
-            if task.get('completed') is True:
-                task_title.append(task['title'])
-                number_of_done_tasks += 1
-            total_number_of_tasks += 1
+        number_of_done_tasks = sum(1 for task in todos_data if task['completed'])
+        total_number_of_tasks = len(todos_data)
+        task_titles = [task['title'] for task in todos_data if task['completed']]
 
-    print('Employee {} is done with tasks({}/{}):'.format(employee_name,
-          number_of_done_tasks, total_number_of_tasks))
+        print(f'Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_number_of_tasks}):')
 
-    for j in task_title:
-        print("\t {}".format(j))
+        for task_title in task_titles:
+            print(f'\t{task_title}')
+
+    except requests.HTTPError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
