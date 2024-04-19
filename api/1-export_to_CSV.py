@@ -3,44 +3,39 @@
 
 import csv
 import requests
-from sys import argv
+import sys
 
 
 def csv_format():
 
-    u_id = argv[1]
-    api_url = f"https://jsonplaceholder.typicode.com/users/{u_id}"
-    api_url2 = f"https://jsonplaceholder.typicode.com/todos?userId={u_id}"
-
-    user_response = requests.get(api_url)
+    user_response = requests.get(
+        f"https://jsonplaceholder.typicode.com/users/{employee_id}")
     user_data = user_response.json()
+    username = user_data.get('username')
 
-    if isinstance(user_data, list):
-        user_data = user_data[0]
-
-    EMPLOYEE_NAME = user_data.get('name')
-
-    todos_response = requests.get(api_url2)
+    todos_response = requests.get(
+        f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
     todos_data = todos_response.json()
 
-    f_name = f"{u_id}.csv"
+    with open(f"{employee_id}.csv", 'w', newline='', encoding='utf-8') as csvfile:
+        csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
 
-    with open(f_name, 'w', newline='', encoding='utf-8') as f:
-        csvwriter = csv.writer(f)
+        csvwriter.writerow(
+            ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
+        )
 
-        csvwriter.writerow(["USER_ID", "USERNAME",
-                            "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-
-        for info in todos_data:
-            TASK_COMPLETED_STATUS = info.get("completed")
-            TASK_TITLE = info.get("title")
-
-            csvwriter.writerow([u_id, EMPLOYEE_NAME,
-                                TASK_COMPLETED_STATUS, TASK_TITLE])
+        for task in todos_data:
+            task_completed = task.get("completed")
+            task_title = task.get("title")
+            csvwriter.writerow(
+                [employee_id, username, task_completed, task_title]
+            )
 
 
-if __name__ == '__main__':
-    if len(argv) != 2:
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
         print(f"UsageError: python3 {__file__} employee_id(int)")
-    else:
-        csv_format()
+        sys.exit(1)
+
+    employee_id = sys.argv[1]
+    csv_format(employee_id)
