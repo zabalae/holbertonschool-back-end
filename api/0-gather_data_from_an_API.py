@@ -29,8 +29,8 @@ def get_employee_tasks():
             task_titles.append(task['title'])
 
     print('Employee {} is done with tasks({}/{}):'
-              .format(employee_name, number_of_done_tasks,
-                      total_number_of_tasks))
+          .format(employee_name, number_of_done_tasks,
+                  total_number_of_tasks))
     for title in task_titles:
         print(f'\t{title}')
 
