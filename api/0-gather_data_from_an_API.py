@@ -5,7 +5,7 @@ import requests
 import sys
 
 
-def get_employee_tasks():
+def get_employee_tasks(employee_id):
 
     employee_name = ""
     number_of_done_tasks = 0
