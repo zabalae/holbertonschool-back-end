@@ -11,7 +11,7 @@ def csv_format():
     u_id = argv[1]
     api_url = f"https://jsonplaceholder.typicode.com/users/{u_id}"
     api_url2 = f"https://jsonplaceholder.typicode.com/todos?userId={u_id}"
-    
+
     user_response = requests.get(api_url)
     user_data = user_response.json()
 
