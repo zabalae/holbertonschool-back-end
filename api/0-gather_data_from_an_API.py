@@ -4,37 +4,39 @@
 import requests
 import sys
 
+
+def get_employee_tasks():
+
+    employee_name = ""
+    number_of_done_tasks = 0
+    total_number_of_tasks = 0
+    task_titles = []
+
+    url_users = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    url_todos = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+
+    user_response = requests.get(url_users)
+    user_data = user_response.json()
+    employee_name = user_data.get('name')
+
+    todos_response = requests.get(url_todos)
+    todos_data = todos_response.json()
+
+    for task in todos_data:
+        total_number_of_tasks += 1
+        if task['completed']:
+            number_of_done_tasks += 1
+            task_titles.append(task['title'])
+
+    print(f'Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_number_of_tasks}):')
+    for title in task_titles:
+        print(f'\t{title}')
+
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print(f"UsageError: python3 {__file__} employee_id(int)")
         sys.exit(1)
 
-    API_URL = "https://jsonplaceholder.typicode.com"
-    EMPLOYEE_ID = sys.argv[1]
-
-    try:
-        response = requests.get(
-            f"{API_URL}/users/{EMPLOYEE_ID}/todos",
-            params={"_expand": "user"}
-        )
-        response.raise_for_status()
-        data = response.json()
-
-        if not len(data):
-            print("RequestError:", 404)
-            sys.exit(1)
-
-        employee_name = data[0]["user"]["name"]
-        total_tasks = len(data)
-        done_tasks = [task for task in data if task["completed"]]
-        total_done_tasks = len(done_tasks)
-
-        print(f"Employee {employee_name} is done with tasks"
-              f"({total_done_tasks}/{total_tasks}):")
-        
-        for task in done_tasks:
-            print(f"\t{task['title']}")
-
-    except requests.HTTPError as e:
-        print(f"Error: {e}")
-        sys.exit(1)
+    employee_id = int(sys.argv[1])
+    get_employee_tasks(employee_id)
