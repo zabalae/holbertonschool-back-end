@@ -12,8 +12,8 @@ def get_employee_tasks():
     total_number_of_tasks = 0
     task_titles = []
 
-    url_users = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    url_todos = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    url_users = "https://jsonplaceholder.typicode.com/users"
+    url_todos = "https://jsonplaceholder.typicode.com/todos"
 
     user_response = requests.get(url_users)
     user_data = user_response.json()
@@ -28,7 +28,9 @@ def get_employee_tasks():
             number_of_done_tasks += 1
             task_titles.append(task['title'])
 
-    print(f'Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_number_of_tasks}):')
+    print('Employee {} is done with tasks({}/{}):'
+              .format(employee_name, number_of_done_tasks,
+                      total_number_of_tasks))
     for title in task_titles:
         print(f'\t{title}')
 
