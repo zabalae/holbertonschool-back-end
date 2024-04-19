@@ -13,7 +13,7 @@ def get_employee_tasks(employee_id):
     task_titles = []
 
     url_users = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    urlTodos = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    url_T = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
     user_response = requests.get(url_users)
     user_data = user_response.json()
@@ -23,7 +23,7 @@ def get_employee_tasks(employee_id):
 
     employee_name = user_data.get('name')
 
-    todos_response = requests.get(urlTodos)
+    todos_response = requests.get(url_T)
     todos_data = todos_response.json()
 
     for task in todos_data:
