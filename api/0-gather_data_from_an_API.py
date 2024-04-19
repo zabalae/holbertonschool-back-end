@@ -12,11 +12,15 @@ def get_employee_tasks(employee_id):
     total_number_of_tasks = 0
     task_titles = []
 
-    url_users = "https://jsonplaceholder.typicode.com/users"
-    url_todos = "https://jsonplaceholder.typicode.com/todos"
+    url_users = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    url_todos = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
     user_response = requests.get(url_users)
     user_data = user_response.json()
+
+    if isinstance(user_data, list):
+        user_data = user_data[0]
+
     employee_name = user_data.get('name')
 
     todos_response = requests.get(url_todos)
