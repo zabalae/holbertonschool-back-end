@@ -17,7 +17,8 @@ def csv_format():
         f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
     todos_data = todos_response.json()
 
-    with open(f"{employee_id}.csv", 'w', newline='', encoding='utf-8') as csvfile:
+    with open(f"{employee_id}.csv", 'w', newline='', 
+              encoding='utf-8') as csvfile:
         csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
 
         csvwriter.writerow(
