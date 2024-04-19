@@ -8,35 +8,18 @@ import sys
 
 def csv_format():
 
-    user_response = requests.get(
-        f"https://jsonplaceholder.typicode.com/users/{employee_id}")
-    user_data = user_response.json()
-    username = user_data.get('username')
+    u_id = sys.argv[1]
 
-    todos_response = requests.get(
-        f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
-    todos_data = todos_response.json()
-
-    with open(f"{employee_id}.csv", 'w', newline='',
-              encoding='utf-8') as csvfile:
-        csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-
-        csvwriter.writerow(
-            ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
-        )
-
-        for task in todos_data:
-            task_completed = task.get("completed")
-            task_title = task.get("title")
-            csvwriter.writerow(
-                [employee_id, username, task_completed, task_title]
-            )
+    user_url = requests.get(
+        'https://jsonplaceholder.typicode.com/users/' + u_id).json()
+    NAME = user_url.get('username')
+    todos = requests.get(
+        'https://jsonplaceholder.typicode.com/users/' + u_id + '/todos')
+    with open("{}.csv".format(u_id), 'w') as f:
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+        for x in todos.json():
+            writer.writerow([u_id, NAME, x.get('completed'), x.get('title')])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"UsageError: python3 {__file__} employee_id(int)")
-        sys.exit(1)
-
-    employee_id = sys.argv[1]
-    csv_format(employee_id)
+    csv_format()
