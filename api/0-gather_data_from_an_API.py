@@ -36,7 +36,7 @@ def get_employee_tasks(employee_id):
           .format(employee_name, number_of_done_tasks,
                   total_number_of_tasks))
     for title in task_titles:
-        print(f'\t{title}')
+        print(f'\t {title}')
 
 
 if __name__ == "__main__":
