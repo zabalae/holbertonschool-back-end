@@ -15,7 +15,7 @@ def csv_format():
     NAME = user_url.get('username')
     todos = requests.get(
         'https://jsonplaceholder.typicode.com/users/' + u_id + '/todos')
-    with open("{}.csv".format(u_id), 'w') as f:
+    with open("{}.csv".format(u_id), 'r') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         for x in todos.json():
             writer.writerow([u_id, NAME, x.get('completed'), x.get('title')])
