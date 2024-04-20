@@ -39,8 +39,6 @@ def get_employee_tasks(employee_id):
                             "TASK_TITLE"])
         csvwriter.writerows(task_data)
 
-    print(f"Data exported to {filename}")
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
