@@ -15,10 +15,13 @@ def csv_format():
     NAME = user_url.get('username')
     todos = requests.get(
         'https://jsonplaceholder.typicode.com/users/' + u_id + '/todos')
-    with open("{}.csv".format(u_id), 'r') as f:
-        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
-        for x in todos.json():
-            writer.writerow([u_id, NAME, x.get('completed'), x.get('title')])
+    f_name = u_id + '.csv'
+    with open(f_name, 'w', encoding='utf-8') as f:
+        for info in todos:
+            TASK_COMPLETED_STATUS = info.get("completed")
+            TASK_TITLE = info.get("title")
+            f.write('"{}","{}","{}","{}"\n'.format(
+                u_id, NAME, TASK_COMPLETED_STATUS, TASK_TITLE))
 
 
 if __name__ == "__main__":
