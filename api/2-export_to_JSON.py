@@ -14,13 +14,12 @@ if __name__ == "__main__":
     todos = requests.get(
         'https://jsonplaceholder.typicode.com/users/' + user_id + '/todos')
 
-    tasks = []
+    datas = {user_id: []}
     for task in todos:
-        task_dict = {"task": task['title'],
-                     "completed": task['completed'],
+        task_dict = {"task": task.get('title'),
+                     "completed": task.get('completed'),
                      "username": NAME}
-        tasks.append(task_dict)
-    datas = {user_id: tasks}
+        datas.get(user_id).append(task_dict)
     filename = '{}.json'.format(user_id)
     with open(filename, 'w') as f:
         json.dump(datas, f)
