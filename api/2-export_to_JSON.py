@@ -12,12 +12,12 @@ if __name__ == "__main__":
         'https://jsonplaceholder.typicode.com/users/' + user_id).json()
     NAME = user_url.get('username')
     todos = requests.get(
-        'https://jsonplaceholder.typicode.com/users/' + user_id + '/todos')
+        'https://jsonplaceholder.typicode.com/todos?userId=' + user_id).json()
 
     datas = {user_id: []}
     for task in todos:
-        task_dict = {"task": task.get('title'),
-                     "completed": task.get('completed'),
+        task_dict = {"task": task['title'],
+                     "completed": task['completed'],
                      "username": NAME}
         datas.get(user_id).append(task_dict)
     with open("{}.json".format(user_id), 'w') as f:
