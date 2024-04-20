@@ -13,7 +13,7 @@ if __name__ == "__main__":
         user_id = user.get('id')
         NAME = user.get('username')
         tasks = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId=' + user_id).json()
+            'https://jsonplaceholder.typicode.com/todos?userId=' + user_id).json()
 
     datas = {user_id: []}
     for task in tasks:
