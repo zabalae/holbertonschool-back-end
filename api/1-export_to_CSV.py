@@ -1,22 +1,19 @@
 #!/usr/bin/python3
 """RESTful API for employee"""
-
 import csv
 import requests
 import sys
 
 
 def get_employee_tasks(employee_id):
-
+    
     employee_name = ""
-    number_of_done_tasks = 0
-    total_number_of_tasks = 0
-    task_titles = []
+    task_data = []
 
-    url_users = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     url_T = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-    user_response = requests.get(url_users)
+    user_response = requests.get(user_url)
     user_data = user_response.json()
 
     if isinstance(user_data, list):
@@ -24,21 +21,25 @@ def get_employee_tasks(employee_id):
 
     employee_name = user_data.get('name')
 
-    todos_response = requests.get(url_T)
-    todos_data = todos_response.json()
+    tasks_response = requests.get(url_T)
+    tasks_data = tasks_response.json()
 
-    for task in todos_data:
-        total_number_of_tasks += 1
-        if task['completed']:
-            number_of_done_tasks += 1
-            task_titles.append(task['title'])
+    for task in tasks_data:
+        task_data.append([
+            employee_id,
+            employee_name,
+            str(task['completed']),
+            task['title']
+        ])
 
     filename = f"{employee_id}.csv"
     with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(["USER_ID","USERNAME", "TASK_COMPLETED_STATUS", 
+        csvwriter.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS",
                             "TASK_TITLE"])
-        csvwriter.writerows(todos_data)
+        csvwriter.writerows(task_data)
+
+    print(f"Data exported to {filename}")
 
 
 if __name__ == "__main__":
@@ -46,5 +47,10 @@ if __name__ == "__main__":
         print(f"UsageError: python3 {__file__} employee_id(int)")
         sys.exit(1)
 
-    employee_id = int(sys.argv[1])
+    try:
+        employee_id = int(sys.argv[1])
+    except ValueError:
+        print("Error: employee_id must be an integer.")
+        sys.exit(1)
+
     get_employee_tasks(employee_id)
