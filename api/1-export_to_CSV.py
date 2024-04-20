@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 '''Export data in the CSV format'''
-
 import requests
 import sys
 
@@ -20,6 +19,7 @@ def csv_format():
             TASK_TITLE = info.get("title")
             f.write('"{}","{}","{}","{}"\n'.format(
                 id, NAME, TASK_COMPLETED_STATUS, TASK_TITLE))
+
 
 if __name__ == '__main__':
     csv_format()
