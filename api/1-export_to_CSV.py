@@ -33,11 +33,11 @@ def get_employee_tasks(employee_id):
         ])
 
     filename = f"{employee_id}.csv"
-    with open(filename, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS",
-                            "TASK_TITLE"])
-        csvwriter.writerows(task_data)
+    with open(filename, 'w') as f:
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+        for i in url_T.json():
+            writer.writerow([employee_id, employee_name,
+                             i.get('completed'), i.get('title')])
 
 
 if __name__ == "__main__":
