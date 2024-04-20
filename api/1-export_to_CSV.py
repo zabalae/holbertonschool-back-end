@@ -45,10 +45,5 @@ if __name__ == "__main__":
         print(f"UsageError: python3 {__file__} employee_id(int)")
         sys.exit(1)
 
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        print("Error: employee_id must be an integer.")
-        sys.exit(1)
-
+    employee_id = int(sys.argv[1])
     get_employee_tasks(employee_id)
