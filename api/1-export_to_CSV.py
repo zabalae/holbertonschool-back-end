@@ -6,7 +6,7 @@ import sys
 
 
 def get_employee_tasks(employee_id):
-    
+
     employee_name = ""
     task_data = []
 
