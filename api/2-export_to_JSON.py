@@ -1,8 +1,6 @@
 #!/usr/bin/python3
-"""
-Write a Python script that, 
-using this REST
-"""
+"""Export data in the JSON format"""
+
 import json
 import requests
 from sys import argv
