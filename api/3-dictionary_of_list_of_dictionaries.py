@@ -14,7 +14,7 @@ if __name__ == "__main__":
         NAME = user.get('username')
         tasks = requests.get(
             f"{user_url}/{user['id']}/todos").json()
-        
+
     datas = {user_id: []}
     for task in tasks:
         task_dict = {"username": NAME,
