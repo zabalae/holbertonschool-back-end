@@ -20,7 +20,7 @@ if __name__ == "__main__":
                      "completed": task['completed'],
                      "username": NAME}
         tasks.append(task_dict)
-    datas = {str(user_id): tasks}
+    datas = {user_id: tasks}
     filename = '{}.json'.format(user_id)
     with open(filename, 'w') as f:
         json.dump(datas, f)
