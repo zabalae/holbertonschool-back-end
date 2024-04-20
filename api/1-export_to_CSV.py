@@ -17,4 +17,5 @@ if __name__ == "__main__":
     with open("{}.csv".format(user_id), 'w') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         for x in todos.json():
-            writer.writerow([user_id, NAME, x.get('completed'), x.get('title')])
+            writer.writerow([user_id, NAME, x.get('completed'),
+                             x.get('title')])
